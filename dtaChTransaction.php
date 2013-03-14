@@ -96,22 +96,22 @@ class dtaChTransaction {
         }
 
         // Bankenclearing-Nr. der Bank des Begünstigten
-        $header .= str_pad('', 12, chr(charFill));
+        $header .= str_pad('', 12, chr(self::charFill));
 
         // Ausgabesequenznummer
-        $header .= str_pad('', 5, chr(charFill));
+        $header .= str_pad('', 5, chr(self::charFill));
 
         // Erstellungsdatum
         $header .= $this->creationDate;
 
         // Bankenclearing-Nr. des Auftraggebers
         if ($this->type == 890)
-            $header .= str_pad($this->senderClearingNr, 7, chr(charFill));
+            $header .= str_pad($this->senderClearingNr, 7, chr(self::charFill));
         else
-            $header .= str_pad('', 7, chr(charFill));
+            $header .= str_pad('', 7, chr(self::charFill));
 
         // Datenfile-Absender-Identifikation
-        $header .= str_pad($this->senderIdentification, 5, chr(charFill));
+        $header .= str_pad($this->senderIdentification, 5, chr(self::charFill));
 
         // Eingabe-Sequenznummer
         $header .= str_pad($this->sequenceNr, 5, '0', STR_PAD_LEFT);
