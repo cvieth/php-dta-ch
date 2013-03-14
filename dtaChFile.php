@@ -28,15 +28,19 @@ class dtaChFile {
     }
 
     public function loadTransaction($seqNr) {
-        return $this->currentTransaction = $this->transactions[$seqNr];
+        return $this->currentTransaction &= $this->transactions[$seqNr];
     }
 
-    public function saveTransaction($seqNr) {
+    public function saveTransaction($seqNr = 0) {
+        $this->currentTransaction = NULL;
+        /*
         if ($this->transactions[$seqNr] = $this->currentTransaction)
             $this->currentTransaction = NULL;
         else
             return FALSE;
         return TRUE;
+         * */
+        
     }
 
     private function createTotalRecord() {
