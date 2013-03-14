@@ -60,7 +60,7 @@ class dtaChFile {
         if (!$fptr)
             throw new Exception('Kann Datei "' . $filename . '"nicht öffnen!');
         foreach ($this->transactions as $transaction) {
-            echo "Writing Transaction: " . $transaction->getSeqNr(). "/n";
+            echo "Writing Transaction: " . $transaction->getSeqNr(). "\n";
             fwrite($fptr, $transaction->toString());
         }
         fclose($fptr);
