@@ -7,9 +7,7 @@
  */
 class dtaChTransaction {
 
-    private $type = '827';
-    private $buffer = '';
-    private $recordHeader = '';
+    private $type = '';
     private $senderClearingNr = '1234567';
     private $senderIdentification = 'ABC12';
     private $sequenceNr = 1;
@@ -66,19 +64,11 @@ class dtaChTransaction {
         return $this->addFieldEntry('32A', $value);
     }
 
-    private function writeBuffer() {
-         $this->buffer = chr(self::charSOH) . $this->createHeadSegment()
-                . chr(self::charCR) . chr(self::charLF) . chr(self::charPlus)
-                . $this->createTextSegment()
-                . chr(self::charCR) . chr(self::charLF) . chr(self::charMinus)
-                . chr(self::charETX);
-    }
-
     function createHeadSegment() {
         $header = '';
 
         // Gewünschter Verarbeitungstag
-        if (($this->type == 826) || ($this->type == 826)) {
+        if (($this->type == 826) || ($this->type == 827)) {
             $header .= date('ymd');
         } else {
             $header .= '000000';
@@ -129,7 +119,7 @@ class dtaChTransaction {
                     $field = array_shift($this->fieldsTA827);
                     if (!isset($this->fieldList[$field]))
                         throw new Exception('Feld "' . $field . '" nicht gesetzt!');
-                    $textSegment .= $field . chr(self::charDoppel) . $this->fieldList[$field] 
+                    $textSegment .= $field . chr(self::charDoppel) . $this->fieldList[$field]
                             . chr(self::charCR) . chr(self::charLF) . chr(self::charDoppel);
                 }
                 return $textSegment;
@@ -142,8 +132,11 @@ class dtaChTransaction {
     }
 
     public function toString() {
-        $this->writeBuffer();
-        return $this->buffer;
+        return chr(self::charSOH) . $this->createHeadSegment()
+                . chr(self::charCR) . chr(self::charLF) . chr(self::charPlus)
+                . $this->createTextSegment()
+                . chr(self::charCR) . chr(self::charLF) . chr(self::charMinus)
+                . chr(self::charETX);
     }
 
 }
