@@ -8,7 +8,6 @@ class dtaChFile {
     private $transactionCounter = 0;
     private $creationDate;
     private $ident;
-    
     public $currentTransaction = NULL;
 
     public function __construct($ident) {
@@ -34,6 +33,24 @@ class dtaChFile {
         else
             return FALSE;
         return TRUE;
+    }
+
+    private function createTotalRecord() {
+        $id = $this->addTransaction(890);
+        $totalRecord = $this->transactions[$id];
+        $sum = 99.00;
+        $totalRecord->setAmountSum($sum);
+    }
+
+    public function createFile($filename) {
+        $this->createTotalRecord();
+        $fptr = fopen($filename, 'w+');
+        if (!$fptr)
+            throw new Exception('Kann Datei "' . $filename . '"nicht öffnen!');
+        foreach($this->transactions as $seqNr => $transaction) {
+            fwrite($fptr, $transaction->toString());
+        }
+        fclose($fptr);
     }
 
 }
