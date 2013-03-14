@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @author Christoph Vieth <christoph.vieth@coreweb.de>
+ */
 require_once('dtaChTransaction.php');
 
 class dtaChFile {
@@ -36,6 +39,10 @@ class dtaChFile {
     }
 
     private function createTotalRecord() {
+        $sum = 0;
+        foreach ($this->transactions as $transaction) {
+            $sum = $sum + $transaction->getAmount();
+        }
         $id = $this->addTransaction(890);
         $totalRecord = $this->transactions[$id];
         $sum = 99.00;
@@ -43,11 +50,11 @@ class dtaChFile {
     }
 
     public function createFile($filename) {
-        $this->createTotalRecord();
+        //$this->createTotalRecord();
         $fptr = fopen($filename, 'w+');
         if (!$fptr)
             throw new Exception('Kann Datei "' . $filename . '"nicht öffnen!');
-        foreach($this->transactions as $seqNr => $transaction) {
+        foreach ($this->transactions as $transaction) {
             fwrite($fptr, $transaction->toString());
         }
         fclose($fptr);
