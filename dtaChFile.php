@@ -3,7 +3,7 @@
 /**
  * @author Christoph Vieth <christoph.vieth@coreweb.de>
  */
-require_once(dirname(__FILE__).'/dtaChTransaction.php');
+require_once(dirname(__FILE__) . '/dtaChTransaction.php');
 
 class dtaChFile {
 
@@ -32,7 +32,7 @@ class dtaChFile {
     }
 
     public function saveTransaction($seqNr) {
-        Ïif ($this->transactions[$seqNr] = $this->currentTransaction)
+        if ($this->transactions[$seqNr] = $this->currentTransaction)
             $this->currentTransaction = NULL;
         else
             return FALSE;
