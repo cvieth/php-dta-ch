@@ -32,8 +32,7 @@ class dtaChFile {
     }
 
     public function saveTransaction($seqNr) {
-        $result = $this->transactions[$seqNr] = $this->currentTransaction;
-        if ($result)
+        Ïif ($this->transactions[$seqNr] = $this->currentTransaction)
             $this->currentTransaction = NULL;
         else
             return FALSE;
