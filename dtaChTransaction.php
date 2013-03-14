@@ -10,7 +10,7 @@ class dtaChTransaction {
     private $type = '';
     private $senderClearingNr = '1234567';
     private $senderIdentification = 'ABC12';
-    private $sequenceNr = 1;
+    private $sequenceNr = 0;
     private $creationDate = '000000';
     private $amount = 0;
     private $fieldList = array();
@@ -35,7 +35,11 @@ class dtaChTransaction {
         $this->senderIdentification = $ident;
         $this->senderClearingNr = $clearingNr;
     }
-
+    
+    public function getSeqNr() {
+        return $this->sequenceNr;
+    }
+    
     private function addFieldEntry($field, $value) {
         if (!isset($this->fieldList[$field]))
             return $this->fieldList[$field] = $value;
