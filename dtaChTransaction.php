@@ -81,7 +81,7 @@ class dtaChTransaction {
     }
 
     public function setRecipient($account, $name, $street, $place) {
-        $value = '/C/' . $acount . chr(self::charCR) . chr(self::charLF)
+        $value = '/C/' . $account . chr(self::charCR) . chr(self::charLF)
                 . $name . chr(self::charCR) . chr(self::charLF)
                 . $street . chr(self::charCR) . chr(self::charLF)
                 . $place . chr(self::charCR) . chr(self::charLF);
