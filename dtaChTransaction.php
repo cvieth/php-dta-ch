@@ -28,11 +28,12 @@ class dtaChTransaction {
     const charMinus = 0x60;
     const charETX = 0x03;
 
-    public function __construct($seqNr, $type, $createDate, $ident) {
+    public function __construct($seqNr, $type, $createDate, $ident, $clearingNr) {
         $this->type = $type;
         $this->sequenceNr = $seqNr;
         $this->creationDate = $createDate;
         $this->senderIdentification = $ident;
+        $this->senderClearingNr = $clearingNr;
     }
 
     private function addFieldEntry($field, $value) {

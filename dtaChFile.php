@@ -11,17 +11,19 @@ class dtaChFile {
     private $transactionCounter = 0;
     private $creationDate;
     private $ident;
+    private $clearing;
     public $currentTransaction = NULL;
 
-    public function __construct($ident) {
+    public function __construct($ident, $clearing) {
         $this->creationDate = date('ymd');
         $this->ident = $ident;
+        $this->clearing = $clearing;
     }
 
     public function addTransaction($type) {
         $this->transactionCounter++;
         $seqNr = $this->transactionCounter;
-        $this->transactions[$seqNr] = new dtaChTransaction($seqNr, $type, $this->creationDate, $this->ident);
+        $this->transactions[$seqNr] = new dtaChTransaction($seqNr, $type, $this->creationDate, $this->ident, $this->clearing);
         return $seqNr;
     }
 
