@@ -3,7 +3,7 @@
 /**
  * @author Christoph Vieth <christoph.vieth@coreweb.de>
  */
-require_once(dirname(__FILE__).'dtaChTransaction.php');
+require_once(dirname(__FILE__).'/dtaChTransaction.php');
 
 class dtaChFile {
 
