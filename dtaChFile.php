@@ -23,24 +23,24 @@ class dtaChFile {
     public function addTransaction($type) {
         $this->transactionCounter++;
         $seqNr = $this->transactionCounter;
-        $this->transactions[$seqNr] = new dtaChTransaction($seqNr, $type, $this->creationDate, $this->ident, $this->clearing);
+        $this->transactions[$seqNr] = new dtaChTransaction($seqNr, $type, $this->creationDate, $this->ident, $this->clearingNr);
         return $seqNr;
     }
 
     public function loadTransaction($seqNr) {
-        return $this->currentTransaction &= $this->transactions[$seqNr];
+        return $this->transactions[$seqNr];
     }
 
-    public function saveTransaction($seqNr = 0) {
-        $this->currentTransaction = NULL;
+    public function saveTransaction($seqNr, $transaction) {
+        //$this->currentTransaction = NULL;
+        $this->transactions[$seqNr] = $transaction;
         /*
-        if ($this->transactions[$seqNr] = $this->currentTransaction)
-            $this->currentTransaction = NULL;
+        if ()
+            //$this->currentTransaction = NULL;
         else
             return FALSE;
         return TRUE;
-         * */
-        
+        */
     }
 
     private function createTotalRecord() {
