@@ -10,7 +10,6 @@ class dtaChTransaction {
     private $type = '827';
     private $buffer = '';
     private $recordHeader = '';
-    private $recordText = '';
     private $senderClearingNr = '1234567';
     private $senderIdentification = 'ABC12';
     private $sequenceNr = 1;
@@ -18,6 +17,7 @@ class dtaChTransaction {
     // Liste der 
     private $fieldList = array();
     private $fieldLast = NULL;
+    private $fieldsTA827 = array('20', '25', '32A', '50', '59', '70');
 
     const charFill = 0xFF;
 
@@ -65,8 +65,6 @@ class dtaChTransaction {
                 . $amount;
         return $this->addFieldEntry('32A', $value);
     }
-    
-
 
     private function writeBuffer() {
         /*
@@ -80,7 +78,7 @@ class dtaChTransaction {
 
         $this->buffer = chr(self::charSOH) . $this->recordHeader
                 . chr(self::charCR) . chr(self::charLF) . chr(self::charPlus)
-                . $this->recordText
+                . $this->createTextSegment()
                 . chr(self::charCR) . chr(self::charLF) . chr(self::charMinus)
                 . chr(self::charETX);
     }
@@ -131,8 +129,32 @@ class dtaChTransaction {
             $this->recordHeader = $header;
     }
 
+    private function createTextSegment() {
+        switch ($this->type) {
+            case 827:
+                $textSegment = '';
+                $field = TRUE;
+                while ($field != FALSE) {
+                    $field = array_shift($this->fieldsTA827);
+                    if (!isset($this->fieldList[$field]))
+                        throw new Exception('Feld "' . $field . '" nicht gesetzt!');
+                    $textSegment .= $field . chr(self::charDoppel) . $this->fieldList[$field] 
+                            . chr(self::charCR) . chr(self::charLF) . chr(self::charDoppel);
+                }
+                return $textSegment;
+                break;
+
+            default:
+                throw new Exception('Transaktionstyp nicht implementiert!');
+                break;
+        }
+    }
+
     public function toString() {
+
+
         $this->createHeader();
+        $this->createTextSegment();
         $this->writeBuffer();
         return $this->buffer;
     }
