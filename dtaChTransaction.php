@@ -67,23 +67,14 @@ class dtaChTransaction {
     }
 
     private function writeBuffer() {
-        /*
-         * if ($length > 0)
-          $fieldEntry = $field . chr(self::charDoppel) . str_pad($value, $length, chr(charFill));
-          else
-          $fieldEntry = $field . chr(self::charDoppel) . $value;
-          $this->recordText .= $fieldEntry;
-         */
-
-
-        $this->buffer = chr(self::charSOH) . $this->recordHeader
+         $this->buffer = chr(self::charSOH) . $this->createHeadSegment()
                 . chr(self::charCR) . chr(self::charLF) . chr(self::charPlus)
                 . $this->createTextSegment()
                 . chr(self::charCR) . chr(self::charLF) . chr(self::charMinus)
                 . chr(self::charETX);
     }
 
-    function createHeader() {
+    function createHeadSegment() {
         $header = '';
 
         // Gewünschter Verarbeitungstag
@@ -126,7 +117,7 @@ class dtaChTransaction {
         if (strlen($header) != 51)
             throw new Exception('Länge des Record Header nicht korrekt!');
         else
-            $this->recordHeader = $header;
+            return $header;
     }
 
     private function createTextSegment() {
@@ -151,10 +142,6 @@ class dtaChTransaction {
     }
 
     public function toString() {
-
-
-        $this->createHeader();
-        $this->createTextSegment();
         $this->writeBuffer();
         return $this->buffer;
     }
