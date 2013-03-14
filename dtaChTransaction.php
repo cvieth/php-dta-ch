@@ -12,14 +12,14 @@ class dtaChTransaction {
     private $senderIdentification = 'ABC12';
     private $sequenceNr = 1;
     private $creationDate = '000000';
-    // Liste der 
+    private $amount = 0;
     private $fieldList = array();
     private $fieldLast = NULL;
     private $fieldsTA827 = array('20', '25', '32A', '50', '59', '70');
 
-    const charFill = 0xFF;
-
     // Feldabgrenzungen
+
+    const charFill = 0x20;
     const charSOH = 0x01;
     const charCR = 0x0D;
     const charLF = 0x25;
@@ -39,11 +39,11 @@ class dtaChTransaction {
         if (!isset($this->fieldList[$field]))
             return $this->fieldList[$field] = $value;
         else
-            throw new Exception("Feld schon gesetzt!");
+            throw new Exception("Feld bereits gesetzt!");
     }
 
     private function genReferenceNr() {
-        list($hash) = str_split(strtoupper(hash('md5', $this->senderIdentification . $this->sequenceNr)));
+        list($hash) = str_split(strtoupper(hash('md5', $this->senderIdentification . $this->sequenceNr)), 11);
         return $this->senderIdentification . $hash;
     }
 
@@ -61,7 +61,42 @@ class dtaChTransaction {
         $value = $valuta . chr(self::charCR) . chr(self::charLF)
                 . $isoCode . chr(self::charCR) . chr(self::charLF)
                 . $amount;
+        $this->amount = $amount;
         return $this->addFieldEntry('32A', $value);
+    }
+
+    public function getAmount() {
+        return $this->amount;
+    }
+
+    public function setInitiator($line1, $line2 = '', $line3 = '', $line4 = '') {
+        $value = $line1;
+        if (strlen($line2) > 0)
+            $value .= chr(self::charCR) . chr(self::charLF) . $line2;
+        if (strlen($line3) > 0)
+            $value .= chr(self::charCR) . chr(self::charLF) . $line3;
+        if (strlen($line4) > 0)
+            $value .= chr(self::charCR) . chr(self::charLF) . $line4;
+        return $this->addFieldEntry('50', $value);
+    }
+
+    public function setRecipient($account, $name, $street, $place) {
+        $value = '/C/' . $acount . chr(self::charCR) . chr(self::charLF)
+                . $name . chr(self::charCR) . chr(self::charLF)
+                . $street . chr(self::charCR) . chr(self::charLF)
+                . $place . chr(self::charCR) . chr(self::charLF);
+        return $this->addFieldEntry('59', $value);
+    }
+
+    public function setPaymentReason($line1, $line2 = '', $line3 = '', $line4 = '') {
+        $value = $line1;
+        if (strlen($line2) > 0)
+            $value .= chr(self::charCR) . chr(self::charLF) . $line2;
+        if (strlen($line3) > 0)
+            $value .= chr(self::charCR) . chr(self::charLF) . $line3;
+        if (strlen($line4) > 0)
+            $value .= chr(self::charCR) . chr(self::charLF) . $line4;
+        return $this->addFieldEntry('70', $value);
     }
 
     function createHeadSegment() {
@@ -117,10 +152,12 @@ class dtaChTransaction {
                 $field = TRUE;
                 while ($field != FALSE) {
                     $field = array_shift($this->fieldsTA827);
-                    if (!isset($this->fieldList[$field]))
-                        throw new Exception('Feld "' . $field . '" nicht gesetzt!');
-                    $textSegment .= $field . chr(self::charDoppel) . $this->fieldList[$field]
-                            . chr(self::charCR) . chr(self::charLF) . chr(self::charDoppel);
+                    if ($field) {
+                        if (!isset($this->fieldList[$field]))
+                            throw new Exception('Feld "' . $field . '" nicht gesetzt!');
+                        $textSegment .= $field . chr(self::charDoppel) . $this->fieldList[$field]
+                                . chr(self::charCR) . chr(self::charLF) . chr(self::charDoppel);
+                    }
                 }
                 return $textSegment;
                 break;
