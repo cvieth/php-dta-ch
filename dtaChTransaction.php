@@ -7,10 +7,10 @@
  * @author Christoph Vieth <cvieth@coreweb.de>
  */
 class dtaChTransaction {
-    
+
     const TA827 = 827;
     const TA890 = 890;
-    
+
     /**
      * Füllzeichen
      * @var char 
@@ -44,10 +44,20 @@ class dtaChTransaction {
     }
 
     public function toString() {
+        switch ($this->type) {
+            case self::TA827:
+                $record = $this->genTA827();
+                break;
+
+            default:
+                throw new Exception("Transaktionstyp nicht nicht implementiert!");
+                break;
+        }
         $string = '';
         while ($segment = array_pop($record)) {
             $string .= $record . "\n";
         }
+        return $string;
     }
 
     private function isIsoCurrencyCode($currencyCode) {
