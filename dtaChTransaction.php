@@ -35,6 +35,7 @@ class dtaChTransaction {
 
     private function genTA827() {
         $record = array();
+        // Segment 01
         $segment01 = '01'
                 . $this->getHeader()
                 . $this->getReferenceNr()
@@ -42,9 +43,18 @@ class dtaChTransaction {
                 . $this->getPaymentAmount()
                 . $this->getReserve(14);
         array_push($record, $segment01);
+
+        // Segment 02
         $segment02 = '02'
                 . $this->getClient()
                 . $this->getReserve(30);
+        array_push($record, $segment02);
+
+        // segment 03
+        $segment03 = '03'
+                . $this->getRecipient();
+        array_push($record, $segment03);
+
         return $record;
     }
 
@@ -141,6 +151,14 @@ class dtaChTransaction {
 
     private function getClient() {
         return $this->getReserve(24)
+                . $this->getReserve(24)
+                . $this->getReserve(24)
+                . $this->getReserve(24);
+    }
+
+    private function getRecipient() {
+        return $this->getReserve(30)
+                . $this->getReserve(24)
                 . $this->getReserve(24)
                 . $this->getReserve(24)
                 . $this->getReserve(24);
