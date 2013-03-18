@@ -42,13 +42,16 @@ class dtaChTransaction {
                 . '              '; // Reserve (Seite 22)
         return $segment01;
     }
-
-    private function getHeader() {
-        $header = '';
-        for ($i = 1; $i <= 51; $i++) {
-            $header .= self::fillChar;
+    
+    private function getReserve($length) {
+        $reserve = '';
+        for ($i = 1; $i <= $length; $i++) {
+            $reserve .= self::fillChar;
         }
-        return $header;
+    }
+    
+    private function getHeader() {
+        return $this->getReserve(51);
     }
 
     public function setDtaId($dtaId) {
