@@ -71,11 +71,11 @@ class dtaChTransaction {
             return FALSE;
     }
 
-   /**
-    * Erzeugt eine TA827 Transaktion
-    * 
-    * @return array
-    */
+    /**
+     * Erzeugt eine TA827 Transaktion
+     * 
+     * @return array
+     */
     private function genTA827() {
         $record = array();
         // Segment 01
@@ -121,8 +121,57 @@ class dtaChTransaction {
     }
 
     private function getHeader() {
-        return $this->getReserve(51);
+        $header = $this->getProcessingDay()
+                . $this->getRecipientClearingNr()
+                . $this->getOutputSequenceNr()
+                . $this->getCreationTime()
+                . $this->getClientClearingNr()
+                . $this->getDtaId()
+                . $this->getInputSequenceNr()
+                . $this->getTransactionType()
+                . $this->getPaymentType()
+                . $this->getProcessingFlag();
+        return $header;
     }
+
+// Start der Header Funktionen
+    private function getProcessingDay() {
+        return $this->getReserve(6);
+    }
+
+    private function getRecipientClearingNr() {
+        return $this->getReserve(12);
+    }
+
+    private function getOutputSequenceNr() {
+        return '00000';
+    }
+
+    private function getCreationTime() {
+        return $this->getReserve(6);
+    }
+
+    private function getClientClearingNr() {
+        return $this->getReserve(7);
+    }
+
+    private function getInputSequenceNr() {
+        return $this->getReserve(5);
+    }
+
+    private function getTransactionType() {
+        return $this->type;
+    }
+
+    private function getPaymentType() {
+        return '0';
+    }
+
+    private function getProcessingFlag() {
+        return '0';
+    }
+
+// Ende der Header Funktionen    
 
     public function setDtaId($dtaId) {
         if (!(strlen($dtaId) == 5))
