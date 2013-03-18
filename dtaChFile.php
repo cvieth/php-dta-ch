@@ -54,7 +54,7 @@ class dtaChFile {
         $totalRecord->setAmountSum($sum);
     }
 
-    public function createFile($filename) {
+    public function toFile($filename) {
         //$this->createTotalRecord();
         $fptr = fopen($filename, 'w+');
         if (!$fptr)
