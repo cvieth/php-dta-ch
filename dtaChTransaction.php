@@ -39,7 +39,7 @@ class dtaChTransaction {
         return $header;
     }
     public function setDtaId($dtaId) {
-        if (strlen($dtaId == 5))
+        if (strlen($dtaId) == 5)
             $this->dtaId = $dtaId;
         else
             throw new Exception("Übergebene DTA-ID hat nicht 5 stellen!");
