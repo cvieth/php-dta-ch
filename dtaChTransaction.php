@@ -51,6 +51,7 @@ class dtaChTransaction {
         for ($i = 1; $i <= $length; $i++) {
             $reserve .= self::fillChar;
         }
+        return $reserve;
     }
     
     private function getHeader() {
