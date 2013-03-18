@@ -70,7 +70,7 @@ class dtaChTransaction {
     }
 
     private function getReferenceNr() {
-        $result = $this->getDtaId() . $this->getTransactionId();
+        return $this->getDtaId() . $this->getTransactionId();
     }
 
     public function setDebitAccount($debitAccount) {
