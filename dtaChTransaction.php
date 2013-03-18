@@ -34,13 +34,16 @@ class dtaChTransaction {
     }
 
     private function genTA827() {
+        $record = array();
         $segment01 = '01'
                 . $this->getHeader()
                 . $this->getReferenceNr()
                 . $this->getDebitAccount()
                 . $this->getPaymentAmount()
-                . '              '; // Reserve (Seite 22)
-        return $segment01;
+                . $this->getReserve(14);
+        array_push($record, $segment01);
+        
+        return $record;
     }
     
     private function getReserve($length) {
