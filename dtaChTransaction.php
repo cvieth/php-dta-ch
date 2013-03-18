@@ -62,7 +62,7 @@ class dtaChTransaction {
         array_push($record, $segment04);
         
         // segment 05
-        $segment03 = '05'
+        $segment05 = '05'
                 . $this->getEndRecipient();
         array_push($record, $segment05);
 
@@ -176,10 +176,10 @@ class dtaChTransaction {
     }
 
     private function getPaymentReason() {
-        return $this->getReserve(24)
-                . $this->getReserve(24)
-                . $this->getReserve(24)
-                . $this->getReserve(24);
+        return $this->getReserve(28)
+                . $this->getReserve(28)
+                . $this->getReserve(28)
+                . $this->getReserve(28);
     }
 
     private function getEndRecipient() {
