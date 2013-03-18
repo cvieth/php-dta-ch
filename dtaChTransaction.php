@@ -13,12 +13,15 @@ class dtaChTransaction {
     private $dtaId = NULL;
     private $debitAccount = NULL;
     private $paymentAmount = NULL;
-
+    
     private function genTA827() {
         $segment01 = '01'
                 . $this->getHeader()
                 . $this->getReferenceNr()
-                . $this->getDebitAccount();
+                . $this->getDebitAccount()
+                . $this->getPaymentAmount()
+                . '              '; // Reserve (Seite 22)
+        return $segment01;
     }
 
     private function getHeader() {
@@ -52,7 +55,13 @@ class dtaChTransaction {
     }
 
     private function getPaymentAmount() {
-        
+        if ($this->paymentAmount == NULL)
+            throw new Exception("Vergütungsbetrag nicht gesetzt!");
+        else
+        if (strlen($this->paymentAmount) != (6 + 3 + 12))
+            throw new Exception("Gesetzter Vergütungsbetrag hat ungültige Länge!");
+        else
+            return $this->dtaId;
     }
 
 }
