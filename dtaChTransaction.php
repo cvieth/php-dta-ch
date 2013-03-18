@@ -103,8 +103,8 @@ class dtaChTransaction {
         }
 
         // Überprüfen des Betrages
-        if ((!is_float($amount)) || (!is_integer($amount)))
-            throw new Exeption("Der übergebene Betrag muss Eine Zahl sein!");
+        if (!((is_float($amount)) || (is_integer($amount))))
+            throw new Exception("Der übergebene Betrag muss Eine Zahl sein!");
         else
             $amount = str_pad(number_format($amount, 2, ',', ''), 12, self::fillChar);
 
