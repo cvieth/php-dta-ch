@@ -14,6 +14,9 @@ class dtaChTransaction {
     private $debitAccount = NULL;
     private $paymentAmount = NULL;
     
+    public function test() {
+        var_dump($this->genTA827());
+    }
     private function genTA827() {
         $segment01 = '01'
                 . $this->getHeader()
