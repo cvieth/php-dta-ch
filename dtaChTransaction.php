@@ -17,10 +17,11 @@ class dtaChTransaction {
     private $dtaId = NULL;
     private $debitAccount = NULL;
     private $paymentAmount = NULL;
-    
+
     public function test() {
         var_dump($this->genTA827());
     }
+
     private function genTA827() {
         $segment01 = '01'
                 . $this->getHeader()
@@ -38,13 +39,14 @@ class dtaChTransaction {
         }
         return $header;
     }
+
     public function setDtaId($dtaId) {
-        if (strlen($dtaId) == 5)
-            $this->dtaId = $dtaId;
-        else
+        if (!(strlen($dtaId) == 5))
             throw new Exception("Übergebene DTA-ID hat nicht 5 stellen!");
+        else
+            $this->dtaId = $dtaId;
     }
-    
+
     private function getDtaId() {
         if ($this->dtaId == NULL)
             throw new Exception("DTA-ID nicht gesetzt!");
@@ -58,6 +60,10 @@ class dtaChTransaction {
 
     private function getReferenceNr() {
         $result = $this->getDtaId() . $this->getTransactionId();
+    }
+
+    public function setDebitAccount($debitAccount) {
+        if ()
     }
 
     private function getDebitAccount() {
