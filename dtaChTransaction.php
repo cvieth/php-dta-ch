@@ -7,8 +7,21 @@
  * @author Christoph Vieth <cvieth@coreweb.de>
  */
 class dtaChTransaction {
+    
+    const TA827 = 827;
+    const TA890 = 890;
+    
+    /**
+     * Füllzeichen
+     * @var char 
+     */
+    private static $fillChar = ' ';
 
-    const fillChar = ' ';
+    /**
+     * Typ des Records
+     * @var string
+     */
+    private $type = NULL;
 
     /**
      * DTA-ID
@@ -18,8 +31,23 @@ class dtaChTransaction {
     private $debitAccount = NULL;
     private $paymentAmount = NULL;
 
+    public function __construct($transactionType) {
+        $avaliableTypes = array(self::TA827);
+        if (!in_array($transactionType, $avaliableTypes))
+            throw new Exception("Transaktionstyp nicht bekannt oder nicht implementiert!");
+        else
+            $this->type = $transactionType;
+    }
+
     public function test() {
         var_dump($this->genTA827());
+    }
+
+    public function toString() {
+        $string = '';
+        while ($segment = array_pop($record)) {
+            $string .= $record . "\n";
+        }
     }
 
     private function isIsoCurrencyCode($currencyCode) {
@@ -54,13 +82,13 @@ class dtaChTransaction {
         $segment03 = '03'
                 . $this->getRecipient();
         array_push($record, $segment03);
-        
+
         // segment 04
         $segment04 = '04'
                 . $this->getPaymentReason()
                 . $this->getReserve(14);
         array_push($record, $segment04);
-        
+
         // segment 05
         $segment05 = '05'
                 . $this->getEndRecipient();
@@ -72,7 +100,7 @@ class dtaChTransaction {
     private function getReserve($length) {
         $reserve = '';
         for ($i = 1; $i <= $length; $i++) {
-            $reserve .= self::fillChar;
+            $reserve .= $this->fillChar;
         }
         return $reserve;
     }
@@ -107,7 +135,7 @@ class dtaChTransaction {
         if (strlen($debitAccount) > 24)
             throw new Exeption("Übergebenes zu belastendes Konto zu lang!");
         else
-            $this->debitAccount = str_pad($debitAccount, 24, self::fillChar);
+            $this->debitAccount = str_pad($debitAccount, 24, $this->fillChar);
     }
 
     private function getDebitAccount() {
@@ -136,7 +164,7 @@ class dtaChTransaction {
         if (!((is_float($amount)) || (is_integer($amount))))
             throw new Exception("Der übergebene Betrag muss Eine Zahl sein!");
         else
-            $amount = str_pad(number_format($amount, 2, ',', ''), 12, self::fillChar);
+            $amount = str_pad(number_format($amount, 2, ',', ''), 12, $this->fillChar);
 
         // Überprüfen des Währungscodes
         if (!$this->isIsoCurrencyCode($currencyCode))
