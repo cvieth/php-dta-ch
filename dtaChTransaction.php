@@ -54,6 +54,17 @@ class dtaChTransaction {
         $segment03 = '03'
                 . $this->getRecipient();
         array_push($record, $segment03);
+        
+        // segment 04
+        $segment04 = '04'
+                . $this->getPaymentReason()
+                . $this->getReserve(14);
+        array_push($record, $segment04);
+        
+        // segment 05
+        $segment03 = '05'
+                . $this->getEndRecipient();
+        array_push($record, $segment05);
 
         return $record;
     }
@@ -157,6 +168,21 @@ class dtaChTransaction {
     }
 
     private function getRecipient() {
+        return $this->getReserve(30)
+                . $this->getReserve(24)
+                . $this->getReserve(24)
+                . $this->getReserve(24)
+                . $this->getReserve(24);
+    }
+
+    private function getPaymentReason() {
+        return $this->getReserve(24)
+                . $this->getReserve(24)
+                . $this->getReserve(24)
+                . $this->getReserve(24);
+    }
+
+    private function getEndRecipient() {
         return $this->getReserve(30)
                 . $this->getReserve(24)
                 . $this->getReserve(24)
