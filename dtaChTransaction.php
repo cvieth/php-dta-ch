@@ -72,18 +72,23 @@ class dtaChTransaction {
     private function getDebitAccount() {
         if ($this->debitAccount == NULL)
             throw new Exception("Zu belastendes Konto nicht gesetzt!");
-        else
-            return str_pad($this->debitAccount, 24, self::fillChar);
+        else {
+            if (strlen($this->debitAccount) != 24)
+                throw new Exception("Gesetztes zu belastendes Konto hat ungültige Länge!");
+            else
+                return $this->debitAccount;
+        }
     }
 
     private function getPaymentAmount() {
         if ($this->paymentAmount == NULL)
             throw new Exception("Vergütungsbetrag nicht gesetzt!");
-        else
-        if (strlen($this->paymentAmount) != (6 + 3 + 12))
-            throw new Exception("Gesetzter Vergütungsbetrag hat ungültige Länge!");
-        else
-            return $this->dtaId;
+        else {
+            if (strlen($this->paymentAmount) != (6 + 3 + 12))
+                throw new Exception("Gesetzter Vergütungsbetrag hat ungültige Länge!");
+            else
+                return $this->dtaId;
+        }
     }
 
 }
