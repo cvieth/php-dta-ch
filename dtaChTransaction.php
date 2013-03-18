@@ -15,7 +15,7 @@ class dtaChTransaction {
      * Füllzeichen
      * @var char 
      */
-    private static $fillChar = ' ';
+    private $fillChar = ' ';
 
     /**
      * Typ des Records
@@ -55,7 +55,7 @@ class dtaChTransaction {
         }
         $string = '';
         while ($segment = array_pop($record)) {
-            $string .= $record . "\n";
+            $string = $segment . "\n" . $string;
         }
         return $string;
     }
@@ -71,6 +71,11 @@ class dtaChTransaction {
             return FALSE;
     }
 
+   /**
+    * Erzeugt eine TA827 Transaktion
+    * 
+    * @return array
+    */
     private function genTA827() {
         $record = array();
         // Segment 01
@@ -134,7 +139,8 @@ class dtaChTransaction {
     }
 
     private function getTransactionId() {
-        return '12345678912';
+        list($hash) = str_split(strtoupper(hash('md5', $this->dtaId)), 11);
+        return $hash;
     }
 
     private function getReferenceNr() {
