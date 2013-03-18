@@ -42,10 +42,12 @@ class dtaChTransaction {
                 . $this->getPaymentAmount()
                 . $this->getReserve(14);
         array_push($record, $segment01);
-        
+        $segment02 = '02'
+                . $this->getClient()
+                . $this->getReserve(30);
         return $record;
     }
-    
+
     private function getReserve($length) {
         $reserve = '';
         for ($i = 1; $i <= $length; $i++) {
@@ -53,7 +55,7 @@ class dtaChTransaction {
         }
         return $reserve;
     }
-    
+
     private function getHeader() {
         return $this->getReserve(51);
     }
@@ -135,6 +137,13 @@ class dtaChTransaction {
             else
                 return $this->paymentAmount;
         }
+    }
+
+    private function getClient() {
+        return $this->getReserve(24)
+                . $this->getReserve(24)
+                . $this->getReserve(24)
+                . $this->getReserve(24);
     }
 
 }
