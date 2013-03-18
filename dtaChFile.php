@@ -65,6 +65,14 @@ class dtaChFile {
         }
         fclose($fptr);
     }
+    
+    public function toString() {
+        $output = '';
+         foreach ($this->transactions as $transaction) {
+            echo "Writing Transaction: " . $transaction->getSeqNr() . "\n";
+            $output .= $transaction->toString();
+        }
+    }
 
 }
 
