@@ -10,6 +10,10 @@ class dtaChTransaction {
 
     const fillChar = ' ';
 
+    /**
+     * DTA-ID
+     * @var string
+     */
     private $dtaId = NULL;
     private $debitAccount = NULL;
     private $paymentAmount = NULL;
@@ -34,7 +38,13 @@ class dtaChTransaction {
         }
         return $header;
     }
-
+    public function setDtaId($dtaId) {
+        if (strlen($dtaId == 5))
+            $this->dtaId = $dtaId;
+        else
+            throw new Exception("Übergebene DTA-ID hat nicht 5 stellen!");
+    }
+    
     private function getDtaId() {
         if ($this->dtaId == NULL)
             throw new Exception("DTA-ID nicht gesetzt!");
