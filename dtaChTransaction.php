@@ -126,7 +126,7 @@ class dtaChTransaction {
             if (strlen($this->paymentAmount) != (6 + 3 + 12))
                 throw new Exception("Gesetzter Vergütungsbetrag hat ungültige Länge!");
             else
-                return $this->dtaId;
+                return $this->paymentAmount;
         }
     }
 
