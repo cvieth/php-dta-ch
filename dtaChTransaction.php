@@ -180,6 +180,10 @@ class dtaChTransaction {
                 . chr(self::charCR) . chr(self::charLF) . chr(self::charMinus)
                 . chr(self::charETX);
     }
+    
+    private function createTA827() {
+        $segment01 = ''
+    }
 
 }
 
