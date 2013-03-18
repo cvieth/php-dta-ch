@@ -63,7 +63,10 @@ class dtaChTransaction {
     }
 
     public function setDebitAccount($debitAccount) {
-        if ()
+        if (strlen($debitAccount) > 24)
+            throw new Exeption("Übergebenes zu belastendes Konto zu lang!");
+        else
+            $this->debitAccount = str_pad($debitAccount, 24, self::fillChar);
     }
 
     private function getDebitAccount() {
