@@ -353,10 +353,10 @@ class dtaChTransaction {
 
     public function setClient($line1, $line2, $line3, $line4) {
         $client = array();
-        array_push($client, str_pad(strtoupper($line4), 24, $this->fillChar));
-        array_push($client, str_pad(strtoupper($line3), 24, $this->fillChar));
-        array_push($client, str_pad(strtoupper($line2), 24, $this->fillChar));
-        array_push($client, str_pad(strtoupper($line1), 24, $this->fillChar));
+        array_push($client, str_pad(strtoupper($this->replaceUmlauts($line4)), 24, $this->fillChar));
+        array_push($client, str_pad(strtoupper($this->replaceUmlauts($line3)), 24, $this->fillChar));
+        array_push($client, str_pad(strtoupper($this->replaceUmlauts($line2)), 24, $this->fillChar));
+        array_push($client, str_pad(strtoupper($this->replaceUmlauts($line1)), 24, $this->fillChar));
         $this->client = $client;
     }
 
@@ -375,10 +375,10 @@ class dtaChTransaction {
 
     public function setRecipient($account, $line1, $line2, $line3, $line4) {
         $recipient = array();
-        array_push($recipient, str_pad(strtoupper($line4), 24, $this->fillChar));
-        array_push($recipient, str_pad(strtoupper($line3), 24, $this->fillChar));
-        array_push($recipient, str_pad(strtoupper($line2), 24, $this->fillChar));
-        array_push($recipient, str_pad(strtoupper($line1), 24, $this->fillChar));
+        array_push($recipient, str_pad(strtoupper($this->replaceUmlauts($line4)), 24, $this->fillChar));
+        array_push($recipient, str_pad(strtoupper($this->replaceUmlauts($line3)), 24, $this->fillChar));
+        array_push($recipient, str_pad(strtoupper($this->replaceUmlauts($line2)), 24, $this->fillChar));
+        array_push($recipient, str_pad(strtoupper($this->replaceUmlauts($line1)), 24, $this->fillChar));
         array_push($recipient, str_pad(strtoupper('/C/' . $account), 30, $this->fillChar));
         $this->recipient = $recipient;
     }
@@ -398,10 +398,10 @@ class dtaChTransaction {
 
     public function setPaymentReason($line1, $line2 = '', $line3 = '', $line4 = '') {
         $reason = array();
-        array_push($reason, str_pad(strtoupper($line4), 28, $this->fillChar));
-        array_push($reason, str_pad(strtoupper($line3), 28, $this->fillChar));
-        array_push($reason, str_pad(strtoupper($line2), 28, $this->fillChar));
-        array_push($reason, str_pad(strtoupper($line1), 28, $this->fillChar));
+        array_push($reason, str_pad(strtoupper($this->replaceUmlauts($line4)), 28, $this->fillChar));
+        array_push($reason, str_pad(strtoupper($this->replaceUmlauts($line3)), 28, $this->fillChar));
+        array_push($reason, str_pad(strtoupper($this->replaceUmlauts($line2)), 28, $this->fillChar));
+        array_push($reason, str_pad(strtoupper($this->replaceUmlauts($line1)), 28, $this->fillChar));
         $this->paymentReason = $reason;
     }
 
