@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @author Christoph Vieth <christoph.vieth@coreweb.de>
+ * @author Christoph Vieth <cvieth@coreweb.de>
  */
 require_once(dirname(__FILE__) . '/dtaChTransaction.php');
 
@@ -23,7 +23,10 @@ class dtaChFile {
     public function addTransaction($type) {
         $this->transactionCounter++;
         $seqNr = $this->transactionCounter;
-        $this->transactions[$seqNr] = new dtaChTransaction($seqNr, $type, $this->creationDate, $this->ident, $this->clearingNr);
+        $this->transactions[$seqNr] = new dtaChTransaction($type);
+        $this->transactions[$seqNr]->setInputSequenceNr($seqNr);
+        $this->transactions[$seqNr]->setCreationDate($this->creationDate);
+        $this->transactions[$seqNr]->setDtaId($this->ident);
         return $seqNr;
     }
 
@@ -32,17 +35,9 @@ class dtaChFile {
     }
 
     public function saveTransaction($seqNr, $transaction) {
-        //$this->currentTransaction = NULL;
-        $this->transactions[$seqNr] = $transaction;
-        /*
-        if ()
-            //$this->currentTransaction = NULL;
-        else
-            return FALSE;
-        return TRUE;
-        */
+        return $this->transactions[$seqNr] = $transaction;
     }
-
+/*
     private function createTotalRecord() {
         $sum = 0;
         foreach ($this->transactions as $transaction) {
@@ -53,22 +48,22 @@ class dtaChFile {
         $sum = 99.00;
         $totalRecord->setAmountSum($sum);
     }
-
+*/
     public function toFile($filename) {
         //$this->createTotalRecord();
         $fptr = fopen($filename, 'w+');
         if (!$fptr)
             throw new Exception('Kann Datei "' . $filename . '"nicht öffnen!');
         foreach ($this->transactions as $transaction) {
-            echo "Writing Transaction: " . $transaction->getSeqNr(). "\n";
+            echo "Writing Transaction: " . $transaction->getSeqNr() . "\n";
             fwrite($fptr, $transaction->toString());
         }
         fclose($fptr);
     }
-    
+
     public function toString() {
         $output = '';
-         foreach ($this->transactions as $transaction) {
+        foreach ($this->transactions as $transaction) {
             echo "Writing Transaction: " . $transaction->getSeqNr() . "\n";
             $output .= $transaction->toString();
         }
