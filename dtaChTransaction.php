@@ -54,9 +54,16 @@ class dtaChTransaction {
     private $clientClearingNr = NULL;
 
     /**
-     *  Erstellungsdatum
+     * Erstellungsdatum
+     * @var string
      */
     private $creationDate = NULL;
+
+    /**
+     * Gewünschter Verarbeitungstag
+     * @var string
+     */
+    private $processingDay = NULL;
 
     public function __construct($transactionType) {
         $avaliableTypes = array(self::TA827);
@@ -161,9 +168,23 @@ class dtaChTransaction {
         return $header;
     }
 
-// Start der Header Funktionen
+    public function setProcessingDay($processingDay) {
+        if (($this->type != self::TA827) || ($this->type != self::TA827))
+            throw new Exception("Gewünschter Verarbeitungstag ist nur bei TA826 und TA827 zu setzen");
+        elseif ((!is_numeric($processingDay)) && (!(strlen($processingDay) == 6)))
+            throw new Exception("Gewünschter Verarbeitungstag muss ein Datum im Format JJMMTT sein!");
+        else
+            $this->processingDay = $processingDay;
+    }
+
     private function getProcessingDay() {
-        return $this->getReserve(6);
+        if (($this->type == self::TA827) || ($this->type == self::TA827)) {
+            if ($this->processingDay == NULL)
+                throw new Exception("Gewünschter Verarbeitungstag nicht gesetzt!");
+            else
+                return $this->processingDay;
+        } else
+            return '000000';
     }
 
     private function getRecipientClearingNr() {
