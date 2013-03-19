@@ -375,10 +375,10 @@ class dtaChTransaction {
 
     public function setRecipient($account, $line1, $line2, $line3, $line4) {
         $recipient = array();
-        array_push($recipient, str_pad(strtoupper($this->replaceUmlauts(substr($line4,0 ,24 ))), 24, $this->fillChar));
-        array_push($recipient, str_pad(strtoupper($this->replaceUmlauts(substr($line3,0 ,24 ))), 24, $this->fillChar));
-        array_push($recipient, str_pad(strtoupper($this->replaceUmlauts(substr($line2,0 ,24 ))), 24, $this->fillChar));
-        array_push($recipient, str_pad(strtoupper($this->replaceUmlauts(substr($line1,0 ,24 ))), 24, $this->fillChar));
+        array_push($recipient, str_pad(strtoupper($this->replaceUmlauts(substr($line4, 0, 24))), 24, $this->fillChar));
+        array_push($recipient, str_pad(strtoupper($this->replaceUmlauts(substr($line3, 0, 24))), 24, $this->fillChar));
+        array_push($recipient, str_pad(strtoupper($this->replaceUmlauts(substr($line2, 0, 24))), 24, $this->fillChar));
+        array_push($recipient, str_pad(strtoupper($this->replaceUmlauts(substr($line1, 0, 24))), 24, $this->fillChar));
         array_push($recipient, str_pad(strtoupper('/C/' . $account), 30, $this->fillChar));
         $this->recipient = $recipient;
     }
@@ -431,18 +431,67 @@ class dtaChTransaction {
 
     private function replaceUmlauts($string) {
         $transMatrix = array(
-            'ä' => 'a',
-            'ü' => 'u',
-            'ö' => 'o',
-            'Ä' => 'A',
-            'Ü' => 'U',
-            'Ö' => 'O',
-            'ß' => 's',
-            'é' => 'e',
-            'è' => 'e',
-            'á' => 'a',
-            'à' => 'a'
-            );
+            "  " => " ",
+            "  " => " ",
+            " " => " ",
+            "À" => "A",
+            "à" => "a",
+            "Á" => "A",
+            "á" => "a",
+            "Â" => "A",
+            "â" => "a",
+            "Ã" => "A",
+            "ã" => "a",
+            "Ä" => "A",
+            "ä" => "a",
+            "Å" => "A",
+            "å" => "a",
+            "Æ" => "A",
+            "æ" => "a",
+            "Ç" => "C",
+            "ç" => "c",
+            "È" => "E",
+            "è" => "e",
+            "É" => "E",
+            "é" => "e",
+            "Ê" => "E",
+            "ê" => "e",
+            "Ë" => "E",
+            "ë" => "e",
+            "Ì" => "I",
+            "ì" => "i",
+            "Í" => "I",
+            "í" => "i",
+            "Î" => "I",
+            "î" => "i",
+            "Ï" => "I",
+            "ï" => "i",
+            "Ñ" => "N",
+            "ñ" => "n",
+            "Ò" => "O",
+            "ò" => "o",
+            "Ó" => "O",
+            "ó" => "o",
+            "Ô" => "O",
+            "ô" => "o",
+            "Õ" => "O",
+            "õ" => "o",
+            "Ö" => "O",
+            "ö" => "o",
+            "Ø" => "O",
+            "ø" => "o",
+            "Ù" => "U",
+            "ù" => "u",
+            "Ú" => "U",
+            "ú" => "u",
+            "Û" => "U",
+            "û" => "u",
+            "Ü" => "U",
+            "ü" => "u",
+            "Y´" => "Y",
+            "y´" => "y",
+            "ß" => "s"
+        );
         return strtr($string, $transMatrix);
     }
 
