@@ -65,6 +65,12 @@ class dtaChTransaction {
      */
     private $processingDay = NULL;
 
+    /**
+     * Auftraggeber
+     * @var array 
+     */
+    private $client = NULL;
+
     public function __construct($transactionType) {
         $avaliableTypes = array(self::TA827);
         if (!in_array($transactionType, $avaliableTypes))
@@ -333,11 +339,29 @@ class dtaChTransaction {
         }
     }
 
+    public function setClient($line1, $line2, $line3, $line4) {
+        $client = array();
+
+        array_push($client, str_pad(strtoupper($line4), 24, $this->fillChar));
+        array_push($client, str_pad(strtoupper($line3), 24, $this->fillChar));
+        array_push($client, str_pad(strtoupper($line2), 24, $this->fillChar));
+        array_push($client, str_pad(strtoupper($line1), 24, $this->fillChar));
+
+        $this->client = $client;
+    }
+
     private function getClient() {
-        return $this->getReserve(24)
-                . $this->getReserve(24)
-                . $this->getReserve(24)
-                . $this->getReserve(24);
+        
+        if ($this->client == NULL)
+            throw new Exception("Auftraggeber nicht gesetzt!");
+        else {
+            $clients = $this->client;
+            $client = '';
+            while ($line = array_pop($clients)) {
+                $client .= $line;
+            }
+            return $client;
+        }
     }
 
     private function getRecipient() {
