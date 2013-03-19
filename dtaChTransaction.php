@@ -375,10 +375,10 @@ class dtaChTransaction {
 
     public function setRecipient($account, $line1, $line2, $line3, $line4) {
         $recipient = array();
-        array_push($recipient, str_pad(strtoupper($this->replaceUmlauts($line4)), 24, $this->fillChar));
-        array_push($recipient, str_pad(strtoupper($this->replaceUmlauts($line3)), 24, $this->fillChar));
-        array_push($recipient, str_pad(strtoupper($this->replaceUmlauts($line2)), 24, $this->fillChar));
-        array_push($recipient, str_pad(strtoupper($this->replaceUmlauts($line1)), 24, $this->fillChar));
+        array_push($recipient, str_pad(strtoupper($this->replaceUmlauts(substr($line4,0 ,24 ))), 24, $this->fillChar));
+        array_push($recipient, str_pad(strtoupper($this->replaceUmlauts(substr($line3,0 ,24 ))), 24, $this->fillChar));
+        array_push($recipient, str_pad(strtoupper($this->replaceUmlauts(substr($line2,0 ,24 ))), 24, $this->fillChar));
+        array_push($recipient, str_pad(strtoupper($this->replaceUmlauts(substr($line1,0 ,24 ))), 24, $this->fillChar));
         array_push($recipient, str_pad(strtoupper('/C/' . $account), 30, $this->fillChar));
         $this->recipient = $recipient;
     }
