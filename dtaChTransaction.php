@@ -28,8 +28,24 @@ class dtaChTransaction {
      * @var string
      */
     private $dtaId = NULL;
+
+    /**
+     * Zu belastendes Konto
+     * @var string
+     */
     private $debitAccount = NULL;
+
+    /**
+     * verhütungsbetrag
+     * @var string
+     */
     private $paymentAmount = NULL;
+
+    /**
+     * Eingabe-Sequenznummer
+     * @var int
+     */
+    private $inputSequenceNr = NULL;
 
     public function __construct($transactionType) {
         $avaliableTypes = array(self::TA827);
@@ -155,8 +171,18 @@ class dtaChTransaction {
         return $this->getReserve(7);
     }
 
+    public function setInputSequenceNr($sequenceNr) {
+        if (!is_integer($sequenceNr))
+            throw new Exception("Übergebene Eingabe-Sequenznummer ist ungültig!");
+        else
+            $this->inputSequenceNr = $sequenceNr;
+    }
+
     private function getInputSequenceNr() {
-        return $this->getReserve(5);
+        if ($this->inputSequenceNr == NULL)
+            throw new Exception("Eingabe-Sequenznummer nicht gesetzt!");
+        else
+            return str_pad($this->inputSequenceNr, 5, '0', STR_PAD_LEFT);
     }
 
     private function getTransactionType() {
