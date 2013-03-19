@@ -429,6 +429,19 @@ class dtaChTransaction {
                 . $this->getReserve(24);
     }
 
+    private function replaceUmlauts($string) {
+        $transMatrix = array(
+            'ä' => 'a',
+            'ü' => 'u',
+            'ö' => 'o',
+            'Ä' => 'A',
+            'Ü' => 'U',
+            'Ö' => 'O',
+            'ß' => 's'
+            );
+        return strtr($string, $transMatrix);
+    }
+
 }
 
 ?>
