@@ -71,6 +71,12 @@ class dtaChTransaction {
      */
     private $client = NULL;
 
+    /**
+     * Recipient
+     * @var array
+     */
+    private $recipient = NULL;
+
     public function __construct($transactionType) {
         $avaliableTypes = array(self::TA827);
         if (!in_array($transactionType, $avaliableTypes))
@@ -341,17 +347,14 @@ class dtaChTransaction {
 
     public function setClient($line1, $line2, $line3, $line4) {
         $client = array();
-
         array_push($client, str_pad(strtoupper($line4), 24, $this->fillChar));
         array_push($client, str_pad(strtoupper($line3), 24, $this->fillChar));
         array_push($client, str_pad(strtoupper($line2), 24, $this->fillChar));
         array_push($client, str_pad(strtoupper($line1), 24, $this->fillChar));
-
         $this->client = $client;
     }
 
     private function getClient() {
-        
         if ($this->client == NULL)
             throw new Exception("Auftraggeber nicht gesetzt!");
         else {
@@ -364,12 +367,27 @@ class dtaChTransaction {
         }
     }
 
+    public function setRecipient($account, $line1, $line2, $line3, $line4) {
+        $recipient = array();
+        array_push($recipient, str_pad(strtoupper($line4), 24, $this->fillChar));
+        array_push($recipient, str_pad(strtoupper($line3), 24, $this->fillChar));
+        array_push($recipient, str_pad(strtoupper($line2), 24, $this->fillChar));
+        array_push($recipient, str_pad(strtoupper($line1), 24, $this->fillChar));
+        array_push($recipient, str_pad(strtoupper('/C/' . $account), 30, $this->fillChar));
+        $this->recipient = $recipient;
+    }
+
     private function getRecipient() {
-        return $this->getReserve(30)
-                . $this->getReserve(24)
-                . $this->getReserve(24)
-                . $this->getReserve(24)
-                . $this->getReserve(24);
+        if ($this->recipient == NULL)
+            throw new Exception("Begünstigter nicht gesetzt!");
+        else {
+            $recipients = $this->recipient;
+            $recipient = '';
+            while ($line = array_pop($recipients)) {
+                $recipient .= $line;
+            }
+            return $recipient;
+        }
     }
 
     private function getPaymentReason() {
