@@ -437,7 +437,11 @@ class dtaChTransaction {
             'Ä' => 'A',
             'Ü' => 'U',
             'Ö' => 'O',
-            'ß' => 's'
+            'ß' => 's',
+            'é' => 'e',
+            'è' => 'e',
+            'á' => 'a',
+            'à' => 'a'
             );
         return strtr($string, $transMatrix);
     }
