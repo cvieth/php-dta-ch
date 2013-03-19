@@ -46,6 +46,12 @@ class dtaChTransaction {
      * @var int
      */
     private $inputSequenceNr = NULL;
+    
+    /**
+     * Bankenclearing-Nr. der bank des Auftraggebers
+     * @var int
+     */
+    private $clientClearingNr = NULL;
 
     public function __construct($transactionType) {
         $avaliableTypes = array(self::TA827);
@@ -166,9 +172,21 @@ class dtaChTransaction {
     private function getCreationTime() {
         return $this->getReserve(6);
     }
-
+    
+    public function setClientClearingNr($clearingNr) {
+        if (!is_integer($clearingNr))
+            throw new Exception("Übergebene Clearing-Nr der Bank des Auftraggebers ist ungültig!");
+        else
+            $this->clientClearingNr = $clearingNr;
+    }
+    
     private function getClientClearingNr() {
+        if ($this->type == self::TA890) 
         return $this->getReserve(7);
+        elseif ($this->clientClearingNr == NULL)
+            throw new Exception("Clearing-Nr der Bank des Auftraggebers nicht gesetzt!");
+        else
+            return str_pad($this->clientClearingNr, 7, $this->fillChar);
     }
 
     public function setInputSequenceNr($sequenceNr) {
