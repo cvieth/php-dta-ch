@@ -72,10 +72,16 @@ class dtaChTransaction {
     private $client = NULL;
 
     /**
-     * Recipient
+     * Begünstigter
      * @var array
      */
     private $recipient = NULL;
+
+    /**
+     * Zahlungsgrund
+     * @var array
+     */
+    private $paymentReason = NULL;
 
     public function __construct($transactionType) {
         $avaliableTypes = array(self::TA827);
@@ -390,11 +396,29 @@ class dtaChTransaction {
         }
     }
 
+    public function setPaymentReason($line1, $line2 = '', $line3 = '', $line4 = '') {
+        $reason = array();
+        array_push($reason, str_pad(strtoupper($line4), 28, $this->fillChar));
+        array_push($reason, str_pad(strtoupper($line3), 28, $this->fillChar));
+        array_push($reason, str_pad(strtoupper($line2), 28, $this->fillChar));
+        array_push($reason, str_pad(strtoupper($line1), 28, $this->fillChar));
+        $this->paymentReason = $reason;
+    }
+
     private function getPaymentReason() {
-        return $this->getReserve(28)
-                . $this->getReserve(28)
-                . $this->getReserve(28)
-                . $this->getReserve(28);
+        if ($this->paymentReason == NULL)
+            return $this->getReserve(28)
+                    . $this->getReserve(28)
+                    . $this->getReserve(28)
+                    . $this->getReserve(28);
+        else {
+            $reasons = $this->paymentReason;
+            $reason = '';
+            while ($line = array_pop($reasons)) {
+                $reason .= $line;
+            }
+            return $reason;
+        }
     }
 
     private function getEndRecipient() {
