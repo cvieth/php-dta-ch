@@ -96,7 +96,7 @@ class dtaChTransaction {
     private $totalAmount;
 
     public function __construct($transactionType) {
-        $avaliableTypes = array(self::TA827);
+        $avaliableTypes = array(self::TA827, self::TA890);
         if (!in_array($transactionType, $avaliableTypes))
             throw new Exception("Transaktionstyp nicht bekannt oder nicht implementiert!");
         else
