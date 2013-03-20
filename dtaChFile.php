@@ -37,20 +37,19 @@ class dtaChFile {
     public function saveTransaction($seqNr, $transaction) {
         return $this->transactions[$seqNr] = $transaction;
     }
-/*
+
     private function createTotalRecord() {
         $sum = 0;
         foreach ($this->transactions as $transaction) {
-            $sum = $sum + $transaction->getAmount();
+            $sum += $transaction->getPaymentAmountNumeric();
         }
         $id = $this->addTransaction(890);
         $totalRecord = $this->transactions[$id];
-        $sum = 99.00;
-        $totalRecord->setAmountSum($sum);
+        $totalRecord->setTotalAmount($sum);
     }
-*/
+
     public function toFile($filename) {
-        //$this->createTotalRecord();
+        $this->createTotalRecord();
         $fptr = fopen($filename, 'w+');
         if (!$fptr)
             throw new Exception('Kann Datei "' . $filename . '"nicht öffnen!');
@@ -62,6 +61,7 @@ class dtaChFile {
     }
 
     public function toString() {
+        $this->createTotalRecord();
         $output = '';
         foreach ($this->transactions as $transaction) {
             //echo "Writing Transaction: " . $transaction->getSeqNr() . "\n";
