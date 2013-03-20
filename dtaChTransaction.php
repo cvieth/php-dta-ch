@@ -89,6 +89,12 @@ class dtaChTransaction {
      */
     private $paymentReason = NULL;
 
+    /**
+     * Totalbetrag
+     * @var string
+     */
+    private $totalAmount;
+
     public function __construct($transactionType) {
         $avaliableTypes = array(self::TA827);
         if (!in_array($transactionType, $avaliableTypes))
@@ -106,7 +112,8 @@ class dtaChTransaction {
             case self::TA827:
                 $record = $this->genTA827();
                 break;
-
+            case self::TA890:
+                $record = $this->genTA890();
             default:
                 throw new Exception("Transaktionstyp nicht nicht implementiert!");
                 break;
@@ -168,6 +175,50 @@ class dtaChTransaction {
         array_push($record, $segment05);
 
         return $record;
+    }
+
+    /**
+     * Erzeugt eine Transaktion vom Typ TA890 (Totalrecord)
+     * 
+     * @return array
+     */
+    private function genTA890() {
+        $record = array();
+        $segment01 = '01'
+                . $this->getHeader()
+                . $this->getTotalAmount()
+                . $this->getReserve(59);
+        array_push($record, $segment01);
+        return $record;
+    }
+    
+    /**
+     * Setzt den Totalbetrag
+     * 
+     * @param float|int $amount
+     * @throws Exception
+     */
+    public function setTotalAmount($amount) {
+        // Überprüfen des Betrages
+        if (!((is_float($amount)) || (is_integer($amount))))
+            throw new Exception("Der übergebene Betrag muss Eine Zahl sein!");
+        else
+            $this->totalAmount = str_pad(number_format($amount, 3, ',', ''), 16, $this->fillChar);
+    }
+
+    /**
+     * Fragt den Totalbetrag ab
+     * 
+     * @return string
+     * @throws Exception
+     */
+    private function getTotalAmount() {
+        if ($this->totalAmount == NULL)
+            throw new Exception("Vergütungsbetrag nicht gesetzt!");
+        elseif (strlen($this->totalAmount) != 16)
+            throw new Exception("Gesetzter Vergütungsbetrag hat ungültige Länge!");
+        else
+            return $this->totalAmount;
     }
 
     private function getReserve($length) {
@@ -348,7 +399,7 @@ class dtaChTransaction {
         else
             $this->paymentAmount = $paymentAmount;
     }
-    
+
     /**
      * Gibt den gesetzen Vergütungsbetrag der Transaktion als numerischen Wert 
      * wieder.
