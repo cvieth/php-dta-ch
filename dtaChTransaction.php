@@ -353,7 +353,7 @@ class dtaChTransaction {
         */
         
         //$seqNr = getInputSequenceNr();
-        return mt_rand (100000, 999999).getInputSequenceNr();
+        return mt_rand (100000, 999999).$this->getInputSequenceNr();
     }
 
     private function getReferenceNr() {
