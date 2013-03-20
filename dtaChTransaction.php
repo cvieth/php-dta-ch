@@ -103,10 +103,6 @@ class dtaChTransaction {
             $this->type = $transactionType;
     }
 
-    public function test() {
-        var_dump($this->genTA827());
-    }
-
     public function toString() {
         switch ($this->type) {
             case self::TA827:
