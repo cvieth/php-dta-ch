@@ -283,7 +283,7 @@ class dtaChTransaction {
         if ($this->type != self::TA827)
             return $this->getReserve(12);
         elseif ($this->recipientClearingNr != NULL)
-            return str_pad($this->recipientClearingNr, 7, $this->fillChar);
+            return str_pad($this->recipientClearingNr, 12, $this->fillChar);
         else
             return $this->getReserve(12);
     }
