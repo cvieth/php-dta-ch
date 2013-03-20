@@ -411,7 +411,7 @@ class dtaChTransaction {
         if ($this->paymentAmountNumeric == NULL)
             throw new Exception("Vergütungsbetrag nicht gesetzt!");
         else
-            return $this->paymentAmount;
+            return $this->paymentAmountNumeric;
     }
 
     private function getPaymentAmount() {
