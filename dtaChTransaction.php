@@ -172,12 +172,12 @@ class dtaChTransaction {
                 . $this->getPaymentReason()
                 . $this->getReserve(14);
         array_push($record, $segment04);
-
+/*
         // segment 05
         $segment05 = '05'
                 . $this->getEndRecipient();
         array_push($record, $segment05);
-
+*/
         return $record;
     }
 
