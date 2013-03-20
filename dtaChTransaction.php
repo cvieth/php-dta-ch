@@ -114,6 +114,7 @@ class dtaChTransaction {
                 break;
             case self::TA890:
                 $record = $this->genTA890();
+                break;
             default:
                 throw new Exception("Transaktionstyp nicht nicht implementiert!");
                 break;
