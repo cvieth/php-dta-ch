@@ -40,7 +40,7 @@ class dtaChTransaction {
      * @var string
      */
     private $paymentAmount = NULL;
-    
+
     /**
      * Vergütungsbetrag in Numerischer Darstellung
      * @var float
@@ -336,17 +336,31 @@ class dtaChTransaction {
             $this->paymentAmountNumeric = $amount;
             $amount = str_pad(number_format($amount, 2, ',', ''), 12, $this->fillChar);
         }
-            
+
 
         // Überprüfen des Währungscodes
         if (!$this->isIsoCurrencyCode($currencyCode))
             throw new Exception("Übergebener ISO-Währungscode nicht bekannt!");
 
-        $paymentAmount = $valuta . $currencyCode. $amount;
+        $paymentAmount = $valuta . $currencyCode . $amount;
         if (strlen($paymentAmount) != (6 + 3 + 12 ))
             throw new Exception("Zu setzender Vergütungsbetrag hat ungültige Länge!");
         else
             $this->paymentAmount = $paymentAmount;
+    }
+    
+    /**
+     * Gibt den gesetzen Vergütungsbetrag der Transaktion als numerischen Wert 
+     * wieder.
+     * 
+     * @return float        Vergütungsbetrag als numerischer Wert
+     * @throws Exception    Vergütungsbetrag nicht gesetzt
+     */
+    public function getPaymentAmountNumeric() {
+        if ($this->paymentAmountNumeric == NULL)
+            throw new Exception("Vergütungsbetrag nicht gesetzt!");
+        else
+            return $this->paymentAmount;
     }
 
     private function getPaymentAmount() {
