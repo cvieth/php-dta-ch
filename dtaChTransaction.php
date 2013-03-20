@@ -36,10 +36,16 @@ class dtaChTransaction {
     private $debitAccount = NULL;
 
     /**
-     * verhütungsbetrag
+     * Vergütungsbetrag
      * @var string
      */
     private $paymentAmount = NULL;
+    
+    /**
+     * Vergütungsbetrag in Numerischer Darstellung
+     * @var float
+     */
+    private $paymentAmountNumeric = NULL;
 
     /**
      * Eingabe-Sequenznummer
@@ -326,14 +332,17 @@ class dtaChTransaction {
         // Überprüfen des Betrages
         if (!((is_float($amount)) || (is_integer($amount))))
             throw new Exception("Der übergebene Betrag muss Eine Zahl sein!");
-        else
+        else {
+            $this->paymentAmountNumeric = $amount;
             $amount = str_pad(number_format($amount, 2, ',', ''), 12, $this->fillChar);
+        }
+            
 
         // Überprüfen des Währungscodes
         if (!$this->isIsoCurrencyCode($currencyCode))
             throw new Exception("Übergebener ISO-Währungscode nicht bekannt!");
 
-        $paymentAmount = $valuta . $amount . $currencyCode;
+        $paymentAmount = $valuta . $currencyCode. $amount;
         if (strlen($paymentAmount) != (6 + 3 + 12 ))
             throw new Exception("Zu setzender Vergütungsbetrag hat ungültige Länge!");
         else
