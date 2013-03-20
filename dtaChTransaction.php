@@ -18,7 +18,7 @@ class dtaChTransaction {
     private $fillChar = ' ';
 
     /**
-     * Typ des Records
+     * Typ des Recordss
      * @var string
      */
     private $type = NULL;
@@ -94,6 +94,13 @@ class dtaChTransaction {
      * @var string
      */
     private $totalAmount;
+
+    /**
+     * Bankenclearing-Nr der Bank des Begüntigten
+     * für TA 827 Transaktionen
+     * @var int
+     */
+    private $recipientClearingNr;
 
     public function __construct($transactionType) {
         $avaliableTypes = array(self::TA827, self::TA890);
@@ -188,7 +195,7 @@ class dtaChTransaction {
         array_push($record, $segment01);
         return $record;
     }
-    
+
     /**
      * Setzt den Totalbetrag
      * 
@@ -259,8 +266,26 @@ class dtaChTransaction {
             return '000000';
     }
 
+    /**
+     * Setze Bankencleraing-Nr. der Bank des Begünstigten
+     * 
+     * @param int $clearingNr
+     * @throws Exception
+     */
+    public function setRecipientClearingNr($clearingNr) {
+        if (!is_integer($clearingNr))
+            throw new Exception("Übergebene Clearing-Nr der Bank des Auftraggebers ist ungültig!");
+        else
+            $this->recipientClearingNr = $clearingNr;
+    }
+
     private function getRecipientClearingNr() {
-        return $this->getReserve(12);
+        if ($this->type != self::TA827)
+            return $this->getReserve(12);
+        elseif ($this->recipientClearingNr != NULL)
+            return str_pad($this->recipientClearingNr, 7, $this->fillChar);
+        else
+            return $this->getReserve(12);
     }
 
     private function getOutputSequenceNr() {
@@ -341,15 +366,15 @@ class dtaChTransaction {
 
     private function getTransactionId() {
         /*
-        $hash = strtoupper(hash('md5', $this->dtaId));
-        for ($i=0; $i<strlen($hash); $i++) {
-            $hash[$i] = ord($hash[$i]);
-        }
-        list($hash) = str_split(strtoupper(hash('md5', $this->dtaId)), 11);
-        */
-        
+          $hash = strtoupper(hash('md5', $this->dtaId));
+          for ($i=0; $i<strlen($hash); $i++) {
+          $hash[$i] = ord($hash[$i]);
+          }
+          list($hash) = str_split(strtoupper(hash('md5', $this->dtaId)), 11);
+         */
+
         //$seqNr = getInputSequenceNr();
-        return mt_rand (100000, 999999).$this->getInputSequenceNr();
+        return mt_rand(100000, 999999) . $this->getInputSequenceNr();
     }
 
     private function getReferenceNr() {
