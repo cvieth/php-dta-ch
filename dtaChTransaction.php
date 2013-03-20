@@ -344,8 +344,16 @@ class dtaChTransaction {
     }
 
     private function getTransactionId() {
+        /*
+        $hash = strtoupper(hash('md5', $this->dtaId));
+        for ($i=0; $i<strlen($hash); $i++) {
+            $hash[$i] = ord($hash[$i]);
+        }
         list($hash) = str_split(strtoupper(hash('md5', $this->dtaId)), 11);
-        return $hash;
+        */
+        
+        //$seqNr = getInputSequenceNr();
+        return mt_rand (100000, 999999).getInputSequenceNr();
     }
 
     private function getReferenceNr() {
