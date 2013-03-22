@@ -5,6 +5,7 @@
  * Format.
  *
  * @author Christoph Vieth <cvieth@coreweb.de>
+ * @license http://www.gnu.org/licenses/lgpl-3.0.txt GNU Lesser General Public License (LGPL)
  */
 class dtaChTransaction {
 

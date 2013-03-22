@@ -1,7 +1,11 @@
 <?php
 
 /**
+ * Klasse zum Erzeugen von DTA Dateien im schweizer Six Interbank Clearing 
+ * Format.
+ * 
  * @author Christoph Vieth <cvieth@coreweb.de>
+ * @license http://www.gnu.org/licenses/lgpl-3.0.txt GNU Lesser General Public License (LGPL)
  */
 require_once(dirname(__FILE__) . '/dtaChTransaction.php');
 
@@ -44,10 +48,10 @@ class dtaChFile {
         foreach ($this->transactions as $transaction) {
             $sum += $transaction->getPaymentAmountNumeric();
         }
-        echo "Summe: ".$sum." <br />/n";
+        echo "Summe: " . $sum . " <br />/n";
         $id = $this->addTransaction(dtaChTransaction::TA890);
         $totalRecord = $this->loadTransaction($id);
-        echo "Record ID: ".$id." <br />/n";
+        echo "Record ID: " . $id . " <br />/n";
         $totalRecord->setTotalAmount($sum);
         $this->saveTransaction($id, $totalRecord);
         echo "Done! <br />/n";
