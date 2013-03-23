@@ -43,18 +43,16 @@ class dtaChFile {
     }
 
     private function createTotalRecord() {
-        echo "### Erzeuge Totalrecord <br />/n";
         $sum = 0;
         foreach ($this->transactions as $transaction) {
             $sum += $transaction->getPaymentAmountNumeric();
         }
-        echo "Summe: " . $sum . " <br />/n";
+        echo "Sum Amount: " . $sum . " &euro;<br />\n";
         $id = $this->addTransaction(dtaChTransaction::TA890);
         $totalRecord = $this->loadTransaction($id);
-        echo "Record ID: " . $id . " <br />/n";
+        echo "Sum Records: " . $id . " <br />\n";
         $totalRecord->setTotalAmount($sum);
         $this->saveTransaction($id, $totalRecord);
-        echo "Done! <br />/n";
     }
 
     public function toFile($filename) {
